@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MyFrame extends JFrame {
-    private MyPanel panel;
+    private static MyPanel panel;
     public MyFrame(){
         panel = new MyPanel();
         this.add(panel);
@@ -12,5 +12,9 @@ public class MyFrame extends JFrame {
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.pack();
+        this.addKeyListener(new MyListener());
+    }
+    public static MyPanel getMyPanel(){
+        return panel;
     }
 }
