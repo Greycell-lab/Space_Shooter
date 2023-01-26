@@ -12,7 +12,7 @@ public class MyFrame extends JFrame {
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.pack();
-        this.addKeyListener(new MyListener());
+        this.addKeyListener(new MyPanel());
     }
     public static MyPanel getMyPanel(){
         return panel;
