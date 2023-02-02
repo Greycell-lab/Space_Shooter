@@ -8,6 +8,5 @@ public class Bullet extends Component{
         bullet = new ImageIcon("bullet.png").getImage().getScaledInstance(25, 50, Image.SCALE_DEFAULT);
         MyPanel.bullets.add(this);
         panel.add(this);
-
     }
 }

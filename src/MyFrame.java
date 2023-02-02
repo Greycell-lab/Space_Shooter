@@ -11,6 +11,7 @@ public class MyFrame extends JFrame {
         this.setResizable(false);
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
         this.pack();
         this.addKeyListener(new MyPanel());
     }
