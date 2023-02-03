@@ -9,7 +9,7 @@ public class MyPanel extends JPanel implements KeyListener{
     public static ArrayList<Bullet> bullets = new ArrayList<>();
     public static ArrayList<Bullet> toRemove = new ArrayList<>();
     boolean left, right;
-    private Image alien;
+    private static Image alien;
     public static Image player;
     private Image background;
     private static final int MAX_WIDTH = 500;
@@ -31,15 +31,14 @@ public class MyPanel extends JPanel implements KeyListener{
         yPlayer = MAX_HEIGHT - player.getHeight(null);
         background = new ImageIcon("background.png").getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT);
         this.setVisible(true);
-        timer = new Timer(15, null);
-        timer.addActionListener(e -> {
+        timer = new Timer(15, e -> {
             if(xAlien >= MAX_WIDTH - alien.getWidth(null) || xAlien < 0) xAlienVelo *= -1;
             xAlien += xAlienVelo;
             if(right && xPlayer < MAX_WIDTH - player.getWidth(null)) setxPlayerPlus();
             if(left && xPlayer > 0) setxPlayerMinus();
             bullets.forEach(b -> {
-                if(yBullet > 0) {
-                    yBullet -= yBulletMove;
+                if(b.yBullet > 0) {
+                    b.yBullet -= yBulletMove;
                 }
                 else {
                     toRemove.add(b);
@@ -55,16 +54,14 @@ public class MyPanel extends JPanel implements KeyListener{
         g2D.drawImage(background, 0, 0, null);
         g2D.drawImage(alien, xAlien, 0, null);
         g2D.drawImage(player, xPlayer, MAX_HEIGHT - player.getHeight(null), null);
-        g2D.drawImage(Bullet.bullet, xBullet, yBullet, null);
+        for(Bullet b : bullets) g2D.drawImage(Bullet.bullet, b.xBullet, b.yBullet, null);
         repaint();
     }
     public static void setxPlayerMinus() {
         xPlayer -= xPlayerVelo;
     }
     public void drawBullet(){
-        new Bullet(this);
-        xBullet = xPlayer+player.getWidth(null)/2-12;
-        yBullet = MAX_HEIGHT - player.getHeight(null);
+        new Bullet(this, MAX_HEIGHT - player.getHeight(null), xPlayer);
     }
     public static void setxPlayerPlus() {
         xPlayer += xPlayerVelo;
