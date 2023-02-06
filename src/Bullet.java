@@ -6,6 +6,7 @@ public class Bullet extends Component{
     public int yBullet;
     public int xBullet;
     public int bSpeed = 2;
+    public Rectangle bullet = new Rectangle(20,40);
     public Bullet(MyPanel panel, int yBullet, int xPlayer){
         this.yBullet = yBullet;
         this.xBullet = xPlayer + 50;
