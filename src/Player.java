@@ -3,6 +3,7 @@ import java.awt.*;
 
 public class Player {
     public Image playerImage;
+    public static Rectangle playerHitbox;
     public static int x = 187;
     public static int y;
     public int pSpeed = 5;
