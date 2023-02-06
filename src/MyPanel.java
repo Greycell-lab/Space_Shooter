@@ -74,7 +74,7 @@ public class MyPanel extends JPanel implements KeyListener{
         Graphics2D g2D = (Graphics2D) g;
         g2D.drawImage(background, 0, 0, null);
 
-        g2D.drawImage(alien.alienImage, alien.x, alien.y, null);
+        g2D.drawImage(alien.alienImage, Alien.x, Alien.y, null);
         g2D.drawImage(player.playerImage, Player.x, MAX_HEIGHT - player.playerImage.getHeight(null), null);
         for(Bullet b : bullets) {
             g2D.drawImage(b.bulletImage, b.xBullet, b.yBullet, null);
