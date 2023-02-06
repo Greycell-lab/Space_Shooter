@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -8,43 +7,30 @@ import java.util.ArrayList;
 public class MyPanel extends JPanel implements KeyListener{
     public static ArrayList<Bullet> bullets = new ArrayList<>();
     public static ArrayList<Bullet> toRemove = new ArrayList<>();
+    Player player = new Player();
+    Alien alien = new Alien();
     boolean left, right;
-    private static Image alien;
-    public static Image player;
-    private Image background;
-    private static final int MAX_WIDTH = 500;
+    private static Image background;
+    public static final int MAX_WIDTH = 500;
     public static final int MAX_HEIGHT = 500;
-    private int xAlien;
-    private int xAlienVelo = 2;
-    private static int xBullet;
-    private static int yBullet;
-    private static final int yBulletMove = 2;
-    private static int xPlayer = 187;
-    private static int yPlayer;
-    private static int xPlayerVelo = 5;
-    Timer timer;
     public MyPanel(){
-        this.setBackground(Color.BLACK);
         this.setPreferredSize(new Dimension(MAX_WIDTH, MAX_HEIGHT));
-        alien = new ImageIcon("enemy.png").getImage().getScaledInstance(125, 100, Image.SCALE_DEFAULT);
-        player = new ImageIcon("player.png").getImage().getScaledInstance(125, 100, Image.SCALE_DEFAULT);
-        yPlayer = MAX_HEIGHT - player.getHeight(null);
         background = new ImageIcon("background.png").getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT);
         this.setVisible(true);
-        timer = new Timer(15, e -> {
-            if(xAlien >= MAX_WIDTH - alien.getWidth(null) || xAlien < 0) xAlienVelo *= -1;
-            xAlien += xAlienVelo;
-            if(right && xPlayer < MAX_WIDTH - player.getWidth(null)) setxPlayerPlus();
-            if(left && xPlayer > 0) setxPlayerMinus();
+        Timer timer = new Timer(15, e -> {
+            if(alien.x >= MAX_WIDTH - alien.alienImage.getWidth(null) || alien.x < 0) alien.aSpeed *= -1;
+            alien.x += alien.aSpeed;
+            if(right && player.x < MAX_WIDTH - player.playerImage.getWidth(null)) moveRight();
+            if(left && player.x > 0) moveLeft();
             bullets.forEach(b -> {
                 if(b.yBullet > 0) {
-                    b.yBullet -= yBulletMove;
+                    b.yBullet -= b.bSpeed;
                 }
                 else {
                     toRemove.add(b);
                 }
             });
-            toRemove.removeAll(toRemove);
+            toRemove.clear();
         });
         timer.start();
     }
@@ -52,19 +38,16 @@ public class MyPanel extends JPanel implements KeyListener{
         super.paint(g);
         Graphics2D g2D = (Graphics2D) g;
         g2D.drawImage(background, 0, 0, null);
-        g2D.drawImage(alien, xAlien, 0, null);
-        g2D.drawImage(player, xPlayer, MAX_HEIGHT - player.getHeight(null), null);
-        for(Bullet b : bullets) g2D.drawImage(Bullet.bullet, b.xBullet, b.yBullet, null);
+        g2D.drawImage(alien.alienImage, alien.x, 0, null);
+        g2D.drawImage(player.playerImage, player.x, MAX_HEIGHT - player.playerImage.getHeight(null), null);
+        for(Bullet b : bullets) g2D.drawImage(b.bulletImage, b.xBullet, b.yBullet, null);
         repaint();
     }
-    public static void setxPlayerMinus() {
-        xPlayer -= xPlayerVelo;
+    public void moveLeft() {
+        player.x -= player.pSpeed;
     }
-    public void drawBullet(){
-        new Bullet(this, MAX_HEIGHT - player.getHeight(null), xPlayer);
-    }
-    public static void setxPlayerPlus() {
-        xPlayer += xPlayerVelo;
+    public void moveRight() {
+        player.x += player.pSpeed;
     }
     @Override
     public void keyTyped(KeyEvent e) {
@@ -73,7 +56,7 @@ public class MyPanel extends JPanel implements KeyListener{
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) right = true;
         if(e.getKeyCode() == KeyEvent.VK_LEFT) left = true;
-        if(e.getKeyCode() == KeyEvent.VK_SPACE) drawBullet();
+        if(e.getKeyCode() == KeyEvent.VK_SPACE) new Bullet(this, MAX_HEIGHT - player.playerImage.getHeight(null), player.x);;
     }
     @Override
     public void keyReleased(KeyEvent e) {
