@@ -1,0 +1,18 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Space Shooter:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Space_Shooter_jar</output-path>
+    <root id="archive" name="Space Shooter.jar">
+      <element id="module-output" name="Space Shooter" />
+      <element id="file-copy" path="$PROJECT_DIR$/alien.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/alien1.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/alien2.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/alien3.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/alien4.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/alien5.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/background.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/bullet.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/explosion.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/player.png" />
+    </root>
+  </artifact>
+</component>
