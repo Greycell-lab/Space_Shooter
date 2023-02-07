@@ -7,9 +7,6 @@ import java.util.ArrayList;
 public class MyPanel extends JPanel implements KeyListener{
     public static ArrayList<Bullet> bullets = new ArrayList<>();
     public static ArrayList<Bullet> toRemove = new ArrayList<>();
-    public static ArrayList<Bullet> alienBulletsToRemove = new ArrayList<>();
-    public static Player player = new Player();
-    public static Alien alien = new Alien();
     public static boolean left, right, shootAble, enemyOnField = false, upgrade = false, alienShoot = false;
     public static int shootCounter, alienShootCounter;
     private static Image background;
@@ -21,7 +18,7 @@ public class MyPanel extends JPanel implements KeyListener{
         JLabel score = new JLabel();
         score.setFocusable(false);
         score.setBounds(325, 0, 175, 35);
-        score.setFont(new Font("Curier New", 0, 25));
+        score.setFont(new Font("Courier New", Font.BOLD, 25));
         score.setForeground(Color.WHITE);
         add(score);
         setPreferredSize(new Dimension(MAX_WIDTH, MAX_HEIGHT));
@@ -86,8 +83,8 @@ public class MyPanel extends JPanel implements KeyListener{
             }
 
             //Player x movement
-            if(right && Player.x < MAX_WIDTH - Player.playerImage.getWidth(null)) player.moveRight();
-            if(left && Player.x > 0) player.moveLeft();
+            if(right && Player.x < MAX_WIDTH - Player.playerImage.getWidth(null)) Player.moveRight();
+            if(left && Player.x > 0) Player.moveLeft();
             //Alien-Bullet flights and Hitbox-Check for intersection with player
 
             //Bullet flights and Hitbox-Check for intersection with alienship
@@ -131,8 +128,8 @@ public class MyPanel extends JPanel implements KeyListener{
         if(Player.playerHitboxBottom != null) g2D.draw(Player.playerHitboxBottom);
         if(Alien.alienHitbox != null) g2D.draw(Alien.alienHitbox);*/
 
-        g2D.drawImage(alien.alienImage, Alien.x, Alien.y, null);
-        g2D.drawImage(player.playerImage, Player.x, MAX_HEIGHT - player.playerImage.getHeight(null), null);
+        g2D.drawImage(Alien.alienImage, Alien.x, Alien.y, null);
+        g2D.drawImage(Player.playerImage, Player.x, MAX_HEIGHT - Player.playerImage.getHeight(null), null);
         for(Bullet b : bullets) {
             g2D.drawImage(b.bulletImage, b.xBullet, b.yBullet, null);
         }
@@ -148,7 +145,7 @@ public class MyPanel extends JPanel implements KeyListener{
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) right = true;
         if(e.getKeyCode() == KeyEvent.VK_LEFT) left = true;
         if(e.getKeyCode() == KeyEvent.VK_SPACE && shootAble) {
-            new Bullet(this, MAX_HEIGHT - player.playerImage.getHeight(null), Player.x);
+            new Bullet(this, MAX_HEIGHT - Player.playerImage.getHeight(null), Player.x);
             shootAble = false;
         }
     }
