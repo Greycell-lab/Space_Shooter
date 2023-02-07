@@ -3,9 +3,9 @@ import java.awt.*;
 import java.util.Random;
 
 public class Alien {
-    public Random rnd = new Random();
+    public static Random rnd = new Random();
     public static Rectangle alienHitbox;
-    public Image alienImage;
+    public static Image alienImage;
     public static int x;
     public static int y;
     public static int aSpeed = 2;

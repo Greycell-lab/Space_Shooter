@@ -2,8 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Player {
-    public Image playerImage;
-    public Image playerDestroyed;
+    public static Image playerImage;
+    public static Image playerDestroyed;
     public static Rectangle playerHitboxMiddle;
     public static Rectangle playerHitboxBottom;
     public static int x = 187;

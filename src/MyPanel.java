@@ -9,7 +9,7 @@ public class MyPanel extends JPanel implements KeyListener{
     public static ArrayList<Bullet> toRemove = new ArrayList<>();
     public static Player player = new Player();
     public static Alien alien = new Alien();
-    public static boolean left, right, shootAble, enemyOnField = false;
+    public static boolean left, right, shootAble, enemyOnField = false, explosion = false;
     public static int shootCounter;
     private static Image background;
     public static final int MAX_WIDTH = 500;
@@ -18,32 +18,60 @@ public class MyPanel extends JPanel implements KeyListener{
         setPreferredSize(new Dimension(MAX_WIDTH, MAX_HEIGHT));
         background = new ImageIcon("background.png").getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT);
         setVisible(true);
+
+        //Game-Engine every 15ms timer
         Timer timer = new Timer(15, e -> {
-            shootCounter++;
+            if(!shootAble) shootCounter++;
             Alien.alienHitbox = new Rectangle(Alien.x + 15, Alien.y + 15, 95, 70);
             Player.playerHitboxMiddle = new Rectangle(Player.x + 45, Player.y, 35, 100);
             Player.playerHitboxBottom = new Rectangle(Player.x, Player.y + 65, 125, 35);
             if(Alien.alienHitbox.intersects(Player.playerHitboxMiddle) || Alien.alienHitbox.intersects(Player.playerHitboxBottom)){
-                player.playerImage = player.playerDestroyed;
+                Player.playerImage = Player.playerDestroyed;
                 JOptionPane.showMessageDialog(null, "You got Destroyed");
                 System.exit(0);
             }
+
+            //Prevent multiple firing every 15 ms
             if(shootCounter == 30) {
                 shootAble = true;
                 shootCounter = 0;
             }
+
+            //If there is no enemy on field, set the Enemy to position above 0
             if(!enemyOnField){
-                Alien.x = alien.rnd.nextInt(0, MAX_WIDTH - 125);
-                Alien.y = -125;
+                    Alien.x = Alien.rnd.nextInt(0, MAX_WIDTH - 125);
+                    Alien.y = -125;
+
+                //Randomizer for alienship Image
+                switch(Alien.rnd.nextInt(0,6)){
+                    case 0 -> Alien.alienImage = new ImageIcon(AlienShips.SHIP1.fileName).getImage()
+                            .getScaledInstance(125, 100, Image.SCALE_DEFAULT);
+                    case 1 -> Alien.alienImage = new ImageIcon(AlienShips.SHIP2.fileName).getImage()
+                            .getScaledInstance(125, 100, Image.SCALE_DEFAULT);
+                    case 2 -> Alien.alienImage = new ImageIcon(AlienShips.SHIP3.fileName).getImage()
+                            .getScaledInstance(125, 100, Image.SCALE_DEFAULT);
+                    case 3 -> Alien.alienImage = new ImageIcon(AlienShips.SHIP4.fileName).getImage()
+                            .getScaledInstance(125, 100, Image.SCALE_DEFAULT);
+                    case 4 -> Alien.alienImage = new ImageIcon(AlienShips.SHIP5.fileName).getImage()
+                            .getScaledInstance(125, 100, Image.SCALE_DEFAULT);
+                    case 5 -> Alien.alienImage = new ImageIcon(AlienShips.SHIP6.fileName).getImage()
+                            .getScaledInstance(125, 100, Image.SCALE_DEFAULT);
+                }
                 enemyOnField = true;
             }
+
+            //Alien y movement
             Alien.y += Alien.aSpeed;
             if(Alien.y > MAX_HEIGHT + 25){
                 enemyOnField = false;
                 Alien.life = 3;
             }
-            if(right && Player.x < MAX_WIDTH - player.playerImage.getWidth(null)) player.moveRight();
+
+            //Player x movement
+            if(right && Player.x < MAX_WIDTH - Player.playerImage.getWidth(null)) player.moveRight();
             if(left && Player.x > 0) player.moveLeft();
+
+            //Bullet flights and Hitbox-Check for intersection with alienship
             bullets.forEach(b -> {
                 b.bulletHitbox = new Rectangle(b.xBullet, b.yBullet, b.bulletImage.getWidth(null),
                         b.bulletImage.getHeight(null));
@@ -69,15 +97,20 @@ public class MyPanel extends JPanel implements KeyListener{
             });
             bullets.removeAll(toRemove);
         });
+        //Starts the timer
         timer.start();
     }
+    //Paint everything on the Screen
     public void paint(Graphics g){
         super.paint(g);
         Graphics2D g2D = (Graphics2D) g;
         g2D.drawImage(background, 0, 0, null);
+
+        //Hitbox visibility
         /*if(Player.playerHitboxMiddle != null) g2D.draw(Player.playerHitboxMiddle);
         if(Player.playerHitboxBottom != null) g2D.draw(Player.playerHitboxBottom);
         if(Alien.alienHitbox != null) g2D.draw(Alien.alienHitbox);*/
+
         g2D.drawImage(alien.alienImage, Alien.x, Alien.y, null);
         g2D.drawImage(player.playerImage, Player.x, MAX_HEIGHT - player.playerImage.getHeight(null), null);
         for(Bullet b : bullets) {
@@ -85,6 +118,8 @@ public class MyPanel extends JPanel implements KeyListener{
         }
         repaint();
     }
+
+    //KeyEvent Handler
     @Override
     public void keyTyped(KeyEvent e) {
     }
