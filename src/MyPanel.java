@@ -32,7 +32,7 @@ public class MyPanel extends JPanel implements KeyListener{
             }
 
             //Prevent multiple firing every 15 ms
-            if(shootCounter == 30) {
+            if(shootCounter == 25) {
                 shootAble = true;
                 shootCounter = 0;
             }
