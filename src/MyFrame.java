@@ -12,9 +12,9 @@ public class MyFrame extends JFrame {
         setTitle("Space Land");
         setResizable(false);
         setVisible(true);
-        setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
+        setLocationRelativeTo(null);
         addKeyListener(new MyPanel());
     }
 }

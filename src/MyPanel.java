@@ -7,22 +7,21 @@ import java.util.ArrayList;
 public class MyPanel extends JPanel implements KeyListener{
     public static ArrayList<Bullet> bullets = new ArrayList<>();
     public static ArrayList<Bullet> toRemove = new ArrayList<>();
+    public static ArrayList<Bullet> alienBulletsToRemove = new ArrayList<>();
     public static Player player = new Player();
     public static Alien alien = new Alien();
-    public static boolean left, right, shootAble, enemyOnField = false, upgrade = false;
-    public static int shootCounter;
+    public static boolean left, right, shootAble, enemyOnField = false, upgrade = false, alienShoot = false;
+    public static int shootCounter, alienShootCounter;
     private static Image background;
     public static final int MAX_WIDTH = 500;
     public static final int MAX_HEIGHT = 500;
     public static int playerScore;
     public MyPanel(){
         setLayout(null);
-        //TextField score = new TextField();
         JLabel score = new JLabel();
         score.setFocusable(false);
         score.setBounds(325, 0, 175, 35);
         score.setFont(new Font("Curier New", 0, 25));
-        score.setBackground(Color.BLACK);
         score.setForeground(Color.WHITE);
         add(score);
         setPreferredSize(new Dimension(MAX_WIDTH, MAX_HEIGHT));
@@ -31,13 +30,16 @@ public class MyPanel extends JPanel implements KeyListener{
 
         //Game-Engine every 15ms timer
         Timer timer = new Timer(15, e -> {
-            if(playerScore % 500 == 0 && playerScore >= 500 && !upgrade) {
+            if(playerScore % 300 == 0 && playerScore >= 500 && !upgrade) {
                 Alien.aSpeed += 0.5;
                 upgrade = true;
             }
-            System.out.println(Alien.aSpeed);
             score.setText("Score: " + playerScore);
             if(!shootAble) shootCounter++;
+            if(alienShoot) {
+                alienShootCounter++;
+                if(alienShootCounter == 50) alienShoot = false;
+            }
             Alien.alienHitbox = new Rectangle(Alien.x + 15, Alien.y + 15, 95, 70);
             Player.playerHitboxMiddle = new Rectangle(Player.x + 45, Player.y, 35, 100);
             Player.playerHitboxBottom = new Rectangle(Player.x, Player.y + 65, 125, 35);
@@ -86,12 +88,12 @@ public class MyPanel extends JPanel implements KeyListener{
             //Player x movement
             if(right && Player.x < MAX_WIDTH - Player.playerImage.getWidth(null)) player.moveRight();
             if(left && Player.x > 0) player.moveLeft();
+            //Alien-Bullet flights and Hitbox-Check for intersection with player
 
             //Bullet flights and Hitbox-Check for intersection with alienship
             bullets.forEach(b -> {
                 b.bulletHitbox = new Rectangle(b.xBullet, b.yBullet, b.bulletImage.getWidth(null),
                         b.bulletImage.getHeight(null));
-
                 if(b.yBullet > 0) {
                     b.yBullet -= b.bSpeed;
                 }
@@ -119,8 +121,8 @@ public class MyPanel extends JPanel implements KeyListener{
         timer.start();
     }
     //Paint everything on the Screen
-    public void paint(Graphics g){
-        super.paint(g);
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
         g2D.drawImage(background, 0, 0, null);
 
