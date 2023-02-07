@@ -7,8 +7,8 @@ import java.util.ArrayList;
 public class MyPanel extends JPanel implements KeyListener{
     public static ArrayList<Bullet> bullets = new ArrayList<>();
     public static ArrayList<Bullet> toRemove = new ArrayList<>();
-    Player player = new Player();
-    Alien alien = new Alien();
+    public static Player player = new Player();
+    public static Alien alien = new Alien();
     public static boolean left, right, shootAble, enemyOnField = false;
     public static int shootCounter;
     private static Image background;
@@ -20,9 +20,11 @@ public class MyPanel extends JPanel implements KeyListener{
         setVisible(true);
         Timer timer = new Timer(15, e -> {
             shootCounter++;
-            Alien.alienHitbox = new Rectangle(Alien.x, Alien.y, 125, 100);
-            Player.playerHitbox = new Rectangle(Player.x, Player.y, 125, 100);
-            if(Alien.alienHitbox.intersects(Player.playerHitbox)){
+            Alien.alienHitbox = new Rectangle(Alien.x + 15, Alien.y + 15, 95, 70);
+            Player.playerHitboxMiddle = new Rectangle(Player.x + 45, Player.y, 35, 100);
+            Player.playerHitboxBottom = new Rectangle(Player.x, Player.y + 65, 125, 35);
+            if(Alien.alienHitbox.intersects(Player.playerHitboxMiddle) || Alien.alienHitbox.intersects(Player.playerHitboxBottom)){
+                player.playerImage = player.playerDestroyed;
                 JOptionPane.showMessageDialog(null, "You got Destroyed");
                 System.exit(0);
             }
@@ -73,7 +75,9 @@ public class MyPanel extends JPanel implements KeyListener{
         super.paint(g);
         Graphics2D g2D = (Graphics2D) g;
         g2D.drawImage(background, 0, 0, null);
-
+        /*if(Player.playerHitboxMiddle != null) g2D.draw(Player.playerHitboxMiddle);
+        if(Player.playerHitboxBottom != null) g2D.draw(Player.playerHitboxBottom);
+        if(Alien.alienHitbox != null) g2D.draw(Alien.alienHitbox);*/
         g2D.drawImage(alien.alienImage, Alien.x, Alien.y, null);
         g2D.drawImage(player.playerImage, Player.x, MAX_HEIGHT - player.playerImage.getHeight(null), null);
         for(Bullet b : bullets) {
