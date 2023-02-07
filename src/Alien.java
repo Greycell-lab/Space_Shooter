@@ -8,7 +8,7 @@ public class Alien {
     public static Image alienImage;
     public static int x;
     public static int y;
-    public static int aSpeed = 2;
+    public static double aSpeed = 1;
     public static int life = 3;
     public Alien(){
         alienImage = new ImageIcon("enemy.png").getImage().getScaledInstance(125, 100, Image.SCALE_DEFAULT);

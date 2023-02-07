@@ -9,30 +9,46 @@ public class MyPanel extends JPanel implements KeyListener{
     public static ArrayList<Bullet> toRemove = new ArrayList<>();
     public static Player player = new Player();
     public static Alien alien = new Alien();
-    public static boolean left, right, shootAble, enemyOnField = false, explosion = false;
+    public static boolean left, right, shootAble, enemyOnField = false, upgrade = false;
     public static int shootCounter;
     private static Image background;
     public static final int MAX_WIDTH = 500;
     public static final int MAX_HEIGHT = 500;
+    public static int playerScore;
     public MyPanel(){
+        setLayout(null);
+        //TextField score = new TextField();
+        JLabel score = new JLabel();
+        score.setFocusable(false);
+        score.setBounds(325, 0, 175, 35);
+        score.setFont(new Font("Curier New", 0, 25));
+        score.setBackground(Color.BLACK);
+        score.setForeground(Color.WHITE);
+        add(score);
         setPreferredSize(new Dimension(MAX_WIDTH, MAX_HEIGHT));
         background = new ImageIcon("background.png").getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT);
         setVisible(true);
 
         //Game-Engine every 15ms timer
         Timer timer = new Timer(15, e -> {
+            if(playerScore % 500 == 0 && playerScore >= 500 && !upgrade) {
+                Alien.aSpeed += 0.5;
+                upgrade = true;
+            }
+            System.out.println(Alien.aSpeed);
+            score.setText("Score: " + playerScore);
             if(!shootAble) shootCounter++;
             Alien.alienHitbox = new Rectangle(Alien.x + 15, Alien.y + 15, 95, 70);
             Player.playerHitboxMiddle = new Rectangle(Player.x + 45, Player.y, 35, 100);
             Player.playerHitboxBottom = new Rectangle(Player.x, Player.y + 65, 125, 35);
             if(Alien.alienHitbox.intersects(Player.playerHitboxMiddle) || Alien.alienHitbox.intersects(Player.playerHitboxBottom)){
                 Player.playerImage = Player.playerDestroyed;
-                JOptionPane.showMessageDialog(null, "You got Destroyed");
+                JOptionPane.showMessageDialog(null, "You got Destroyed\nYour Score: " + playerScore);
                 System.exit(0);
             }
 
             //Prevent multiple firing every 15 ms
-            if(shootCounter == 25) {
+            if(shootCounter == 15) {
                 shootAble = true;
                 shootCounter = 0;
             }
@@ -87,7 +103,9 @@ public class MyPanel extends JPanel implements KeyListener{
                 if(b.bulletHitbox.intersects(Alien.alienHitbox)){
                     Alien.life--;
                     if(Alien.life==0){
+                        playerScore += 100;
                         enemyOnField = false;
+                        upgrade = false;
                         Alien.life = 3;
                     }
                     toRemove.add(b);
