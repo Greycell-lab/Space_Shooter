@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MyPanel extends JPanel implements KeyListener{
     public static ArrayList<Bullet> bullets = new ArrayList<>();
@@ -26,7 +27,7 @@ public class MyPanel extends JPanel implements KeyListener{
         add(shields);
         add(score);
         setPreferredSize(new Dimension(MAX_WIDTH, MAX_HEIGHT));
-        background = new ImageIcon(MyPanel.class.getResource("/background.png")).getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT);
+        background = new ImageIcon(Objects.requireNonNull(MyPanel.class.getResource("/background.png"))).getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT);
         setVisible(true);
 
         //Game-Engine every 15ms timer
