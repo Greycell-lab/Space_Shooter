@@ -16,22 +16,27 @@ public class MyPanel extends JPanel implements KeyListener{
     public MyPanel(){
         setLayout(null);
         JLabel score = new JLabel();
-        score.setFocusable(false);
         score.setBounds(325, 0, 175, 35);
         score.setFont(new Font("Courier New", Font.BOLD, 25));
         score.setForeground(Color.WHITE);
+        JLabel shields = new JLabel();
+        shields.setBounds(0, 0, 175, 35);
+        shields.setFont(new Font("Courier New", Font.BOLD, 25));
+        shields.setForeground(Color.WHITE);
+        add(shields);
         add(score);
         setPreferredSize(new Dimension(MAX_WIDTH, MAX_HEIGHT));
-        background = new ImageIcon("background.png").getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT);
+        background = new ImageIcon(MyPanel.class.getResource("/background.png")).getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT);
         setVisible(true);
 
         //Game-Engine every 15ms timer
         Timer timer = new Timer(15, e -> {
+            score.setText("Score: " + playerScore);
+            shields.setText(("Shields: " + Player.shieldCounter));
             if(playerScore % 300 == 0 && playerScore >= 500 && !upgrade) {
                 Alien.aSpeed += 0.5;
                 upgrade = true;
             }
-            score.setText("Score: " + playerScore);
             if(!shootAble) shootCounter++;
             if(alienShoot) {
                 alienShootCounter++;
@@ -41,9 +46,15 @@ public class MyPanel extends JPanel implements KeyListener{
             Player.playerHitboxMiddle = new Rectangle(Player.x + 45, Player.y, 35, 100);
             Player.playerHitboxBottom = new Rectangle(Player.x, Player.y + 65, 125, 35);
             if(Alien.alienHitbox.intersects(Player.playerHitboxMiddle) || Alien.alienHitbox.intersects(Player.playerHitboxBottom)){
-                Player.playerImage = Player.playerDestroyed;
-                JOptionPane.showMessageDialog(null, "You got Destroyed\nYour Score: " + playerScore);
-                System.exit(0);
+                if(!Player.shield) {
+                    Player.playerImage = Player.playerDestroyed;
+                    JOptionPane.showMessageDialog(null, "You got Destroyed\nYour Score: " + playerScore);
+                    System.exit(0);
+                }
+                else{
+                    enemyOnField = false;
+                    Player.shield = false;
+                }
             }
 
             //Prevent multiple firing every 15 ms
@@ -133,6 +144,7 @@ public class MyPanel extends JPanel implements KeyListener{
         for(Bullet b : bullets) {
             g2D.drawImage(b.bulletImage, b.xBullet, b.yBullet, null);
         }
+        if(Player.shield)g2D.drawImage(Shield.shieldImage, Player.x - 10, Player.y + 5, null);
         repaint();
     }
 
@@ -144,6 +156,10 @@ public class MyPanel extends JPanel implements KeyListener{
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) right = true;
         if(e.getKeyCode() == KeyEvent.VK_LEFT) left = true;
+        if(e.getKeyCode() == KeyEvent.VK_B && Player.shieldCounter > 0 && !Player.shield) {
+            Player.shieldCounter--;
+            Player.shield = true;
+        }
         if(e.getKeyCode() == KeyEvent.VK_SPACE && shootAble) {
             new Bullet(this, MAX_HEIGHT - Player.playerImage.getHeight(null), Player.x);
             shootAble = false;
