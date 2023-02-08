@@ -63,7 +63,7 @@ public class MyPanel extends JPanel implements KeyListener{
                 shootCounter = 0;
             }
 
-            //If there is no enemy on field, set the Enemy to position above 0
+            //If there is no enemy on field, set the Enemy to position above Window
             if(!enemyOnField){
                     Alien.x = Alien.rnd.nextInt(0, MAX_WIDTH - 125);
                     Alien.y = -125;

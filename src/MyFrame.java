@@ -1,13 +1,11 @@
 import javax.swing.*;
-import java.awt.*;
 
 public class MyFrame extends JFrame {
-    private static MyPanel panel;
+    private final static MyPanel panel = new MyPanel();
     public MyFrame(){
         init();
     }
     public void init(){
-        panel = new MyPanel();
         add(panel);
         setTitle("Space Land");
         setResizable(false);
