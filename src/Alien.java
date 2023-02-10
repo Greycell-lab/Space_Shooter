@@ -43,12 +43,19 @@ public class Alien {
                     panel.remove(b);
                     b.bulletImage = null;
                 }
-                if(b.bulletHitbox.intersects(Player.playerHitboxMiddle) || b.bulletHitbox.intersects(Player.playerHitboxBottom) && !Player.shield){
-                    Player.playerImage = Player.playerDestroyed;
-                    MyPanel.left = false;
-                    MyPanel.right = false;
-                    JOptionPane.showMessageDialog(null, "You got Destroyed\nYour Score: " + MyPanel.playerScore);
-                    System.exit(0);
+                if((b.bulletHitbox.intersects(Player.playerHitboxMiddle) || b.bulletHitbox.intersects(Player.playerHitboxBottom))){
+                    if(!Player.shield) {
+                        Player.playerImage = Player.playerDestroyed;
+                        toRemove.add(b);
+                        MyPanel.left = false;
+                        MyPanel.right = false;
+                        JOptionPane.showMessageDialog(null, "You got Destroyed\nYour Score: " + MyPanel.playerScore);
+                        System.exit(0);
+                    }
+                    else{
+                        Player.shield = false;
+                        toRemove.add(b);
+                    }
                 }
             });
             alienBullets.removeAll(toRemove);
