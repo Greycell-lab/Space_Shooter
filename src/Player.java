@@ -2,11 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
-public class Player {
+public class Player{
     public static boolean shield = false;
     public static int shieldCounter = 3;
-    public static Image playerImage = new ImageIcon(Objects.requireNonNull(Player.class.getResource("/player.png"))).getImage().getScaledInstance(125, 100, Image.SCALE_DEFAULT);
-    public static Image playerDestroyed = new ImageIcon(Objects.requireNonNull(Player.class.getResource("/explosion.png"))).getImage().getScaledInstance(125, 100, Image.SCALE_DEFAULT);
+    public static Image playerImage = new ImageIcon(Objects.requireNonNull(Player.class.getResource("/player.png")))
+            .getImage().getScaledInstance(125, 100, Image.SCALE_DEFAULT);
+    public static Image playerDestroyed = new ImageIcon(Objects.requireNonNull(Player.class.getResource("/explosion.png")))
+            .getImage().getScaledInstance(125, 100, Image.SCALE_DEFAULT);
     public static Rectangle playerHitboxMiddle;
     public static Rectangle playerHitboxBottom;
     public static int x = 187;
@@ -18,5 +20,4 @@ public class Player {
     public static void moveRight() {
         x += pSpeed;
     }
-
 }

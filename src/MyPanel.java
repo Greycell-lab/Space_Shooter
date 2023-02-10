@@ -128,6 +128,8 @@ public class MyPanel extends JPanel implements KeyListener{
         });
         //Starts the timer
         timer.start();
+
+        Alien.alienShoot(this);
     }
     //Paint everything on the Screen
     public void paintComponent(Graphics g){
@@ -144,6 +146,9 @@ public class MyPanel extends JPanel implements KeyListener{
         g2D.drawImage(Player.playerImage, Player.x, MAX_HEIGHT - Player.playerImage.getHeight(null), null);
         for(Bullet b : bullets) {
             g2D.drawImage(b.bulletImage, b.xBullet, b.yBullet, null);
+        }
+        for(Bullet b : Alien.alienBullets){
+            g2D.drawImage(Alien.alienBulletImage, b.xBullet, b.yBullet, null);
         }
         if(Player.shield)g2D.drawImage(Shield.shieldImage, Player.x - 10, Player.y + 5, null);
         repaint();
@@ -162,7 +167,7 @@ public class MyPanel extends JPanel implements KeyListener{
             Player.shield = true;
         }
         if(e.getKeyCode() == KeyEvent.VK_SPACE && shootAble) {
-            new Bullet(this, MAX_HEIGHT - Player.playerImage.getHeight(null), Player.x);
+            bullets.add(new Bullet(this, MAX_HEIGHT - Player.playerImage.getHeight(null), Player.x));
             shootAble = false;
         }
     }

@@ -8,11 +8,10 @@ public class Bullet extends Component{
     public int xBullet;
     public int bSpeed = 4;
     public Rectangle bulletHitbox;
-    public Bullet(MyPanel panel, int yBullet, int xPlayer){
+    public Bullet(MyPanel panel, int yBullet, int xBullet){
         this.yBullet = yBullet;
-        this.xBullet = xPlayer + 50;
+        this.xBullet = xBullet + 50;
         bulletImage = new ImageIcon(Objects.requireNonNull(Bullet.class.getResource("/bullet.png"))).getImage().getScaledInstance(25, 50, Image.SCALE_DEFAULT);
-        MyPanel.bullets.add(this);
         panel.add(this);
     }
 }
