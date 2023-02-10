@@ -129,7 +129,7 @@ public class MyPanel extends JPanel implements KeyListener{
         //Starts the timer
         timer.start();
 
-        Alien.alienShoot(this);
+        //Alien.alienShoot(this);
     }
     //Paint everything on the Screen
     public void paintComponent(Graphics g){
