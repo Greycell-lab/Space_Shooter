@@ -11,7 +11,8 @@ public class MyPanel extends JPanel implements KeyListener{
     public static LinkedList<Bullet> bullets = new LinkedList<>();
     public static LinkedList<Bullet> toRemove = new LinkedList<>();
     public static boolean left, right, shootAble, enemyOnField = false, upgrade = false, alienShoot = false;
-    public static int shootCounter, alienShootCounter;
+    public static boolean alienDestroyed = false;
+    public static int shootCounter, alienShootCounter, alienExplosionCounter;
     private static Image background;
     public static final int MAX_WIDTH = 500;
     public static final int MAX_HEIGHT = 500;
@@ -65,11 +66,21 @@ public class MyPanel extends JPanel implements KeyListener{
                 shootAble = true;
                 shootCounter = 0;
             }
-
+            //Alien Explosion
+            if(alienDestroyed){
+                alienExplosionCounter++;
+                if(alienExplosionCounter >= 50) {
+                    alienDestroyed = false;
+                    enemyOnField = false;
+                    upgrade = false;
+                    Alien.life = 3;
+                    alienExplosionCounter = 0;
+                }
+            }
             //If there is no enemy on field, set the Enemy to position above Window
             if(!enemyOnField){
-                    Alien.x = Alien.rnd.nextInt(0, MAX_WIDTH - 125);
-                    Alien.y = -125;
+                Alien.x = Alien.rnd.nextInt(0, MAX_WIDTH - 125);
+                Alien.y = -125;
 
                 //Randomizer for alienship Image
                 switch(Alien.rnd.nextInt(0,6)){
@@ -90,7 +101,7 @@ public class MyPanel extends JPanel implements KeyListener{
             }
 
             //Alien y movement
-            Alien.y += Alien.aSpeed;
+            if(!alienDestroyed) Alien.y += Alien.aSpeed;
             if(Alien.y > MAX_HEIGHT + 25){
                 enemyOnField = false;
                 Alien.life = 3;
@@ -113,13 +124,14 @@ public class MyPanel extends JPanel implements KeyListener{
                     remove(b);
                     b.bulletImage = null;
                 }
-                if(b.bulletHitbox.intersects(Alien.alienHitbox)){
+                if(b.bulletHitbox.intersects(Alien.alienHitbox) && !alienDestroyed){
                     Alien.life--;
                     if(Alien.life==0){
                         playerScore += 100;
-                        enemyOnField = false;
-                        upgrade = false;
-                        Alien.life = 3;
+                        Alien.alienImage = Player.playerDestroyed;
+                        alienDestroyed = true;
+                        //enemyOnField = false;
+
                     }
                     toRemove.add(b);
                     remove(b);
@@ -130,7 +142,7 @@ public class MyPanel extends JPanel implements KeyListener{
         });
         //Starts the timers
         timer.start();
-        //Alien.alienShoot(this);
+        //Alien.alienShoot(this );
     }
     //Paint everything on the Screen
     public void paintComponent(Graphics g){
