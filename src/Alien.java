@@ -1,13 +1,11 @@
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class Alien {
-    public static ArrayList<Bullet> alienBullets = new ArrayList<>();
-    public static ArrayList<Bullet> toRemove = new ArrayList<>();
+    public static LinkedList<Bullet> alienBullets = new LinkedList<>();
+    public static LinkedList<Bullet> toRemove = new LinkedList<>();
     public static boolean alienShooted = false;
     public static int alienShootCounter;
     public static Image alienBulletImage = new ImageIcon(Objects.requireNonNull(Alien.class
@@ -22,7 +20,7 @@ public class Alien {
     public static double aSpeed = 1;
     public static int life = 3;
     public static void alienShoot(MyPanel panel){
-        aShoot = new Timer(15, e ->{
+        aShoot = new Timer(10, e ->{
             if(alienShootCounter >= 100) {
                 alienShooted = false;
             }
@@ -41,7 +39,6 @@ public class Alien {
                 else{
                     toRemove.add(b);
                     panel.remove(b);
-                    b.bulletImage = null;
                 }
                 if((b.bulletHitbox.intersects(Player.playerHitboxMiddle) || b.bulletHitbox.intersects(Player.playerHitboxBottom))){
                     if(!Player.shield) {

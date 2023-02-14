@@ -2,12 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.Closeable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Objects;
 
 public class MyPanel extends JPanel implements KeyListener{
-    public static ArrayList<Bullet> bullets = new ArrayList<>();
-    public static ArrayList<Bullet> toRemove = new ArrayList<>();
+    public static LinkedList<Bullet> bullets = new LinkedList<>();
+    public static LinkedList<Bullet> toRemove = new LinkedList<>();
     public static boolean left, right, shootAble, enemyOnField = false, upgrade = false, alienShoot = false;
     public static int shootCounter, alienShootCounter;
     private static Image background;
@@ -31,7 +33,7 @@ public class MyPanel extends JPanel implements KeyListener{
         setVisible(true);
 
         //Game-Engine every 15ms timer
-        Timer timer = new Timer(15, e -> {
+        Timer timer = new Timer(10, e -> {
             score.setText("Score: " + playerScore);
             shields.setText(("Shields: " + Player.shieldCounter));
             if(playerScore % 300 == 0 && playerScore >= 500 && !upgrade) {
@@ -126,9 +128,8 @@ public class MyPanel extends JPanel implements KeyListener{
             });
             bullets.removeAll(toRemove);
         });
-        //Starts the timer
+        //Starts the timers
         timer.start();
-
         //Alien.alienShoot(this);
     }
     //Paint everything on the Screen
