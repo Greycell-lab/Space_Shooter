@@ -21,7 +21,7 @@ public class Alien {
     public static int life = 3;
     public static void alienShoot(MyPanel panel){
         aShoot = new Timer(10, e ->{
-            if(alienShootCounter >= 100) {
+            if(alienShootCounter >= 150) {
                 alienShooted = false;
             }
             if(alienShooted) alienShootCounter++;
