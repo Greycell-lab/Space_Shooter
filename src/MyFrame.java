@@ -1,9 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class MyFrame extends JFrame {
     public final static MyPanel panel = new MyPanel();
-    public static Image icon = new ImageIcon(MyFrame.class.getResource("/player.png")).getImage();
+    public static Image icon = new ImageIcon(Objects.requireNonNull(MyFrame.class.getResource("/player.png"))).getImage();
     public MyFrame(){
         init();
     }

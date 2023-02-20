@@ -73,12 +73,12 @@ public class MyPanel extends JPanel implements KeyListener{
                     alienDestroyed = false;
                     enemyOnField = false;
                     upgrade = false;
-                    Alien.life = 3;
                     alienExplosionCounter = 0;
                 }
             }
             //If there is no enemy on field, set the Enemy to position above Window
             if(!enemyOnField){
+                Alien.life = 3;
                 Alien.x = Alien.rnd.nextInt(0, MAX_WIDTH - 125);
                 Alien.y = -125;
 
