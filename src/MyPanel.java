@@ -2,8 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.Closeable;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -33,7 +31,7 @@ public class MyPanel extends JPanel implements KeyListener{
         background = new ImageIcon(Objects.requireNonNull(MyPanel.class.getResource("/background.png"))).getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT);
         setVisible(true);
 
-        //Game-Engine every 15ms timer
+        //Game-Engine every 10ms timer
         Timer timer = new Timer(10, e -> {
             score.setText("Score: " + playerScore);
             shields.setText(("Shields: " + Player.shieldCounter));
@@ -142,7 +140,7 @@ public class MyPanel extends JPanel implements KeyListener{
         });
         //Starts the timers
         timer.start();
-        Alien.alienShoot(this );
+        //Alien.alienShoot(this);
     }
     //Paint everything on the Screen
     public void paintComponent(Graphics g){
